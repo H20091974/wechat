@@ -2,6 +2,7 @@ package com.claire7.wechat.controller;
 
 import com.claire7.wechat.handler.TalkAboutDesignHandler;
 import com.claire7.wechat.handler.TravelDesignHandler;
+import com.claire7.wechat.service.ChatRobotService;
 import com.claire7.wechat.util.Constant;
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxConsts;
@@ -30,6 +31,7 @@ import java.io.PrintWriter;
 public class WeChatController {
 
     private IService iService = new WxService();
+    private ChatRobotService chatRobotService = new ChatRobotService();
 
     @GetMapping
     public String check(String signature, String timestamp, String nonce, String echostr) {
@@ -57,9 +59,9 @@ public class WeChatController {
             // 把消息传递给路由器进行处理
             WxXmlOutMessage xmlOutMsg = null;
             if ("1".equals(wx.getContent())){
-                xmlOutMsg = executeText(wx);
-            }else {
                 xmlOutMsg = executeArticle(wx);
+            }else {
+                xmlOutMsg = executeText(wx);
             }
             if (xmlOutMsg != null)
                 out.print(xmlOutMsg.toXml());
@@ -88,7 +90,13 @@ public class WeChatController {
     }
 
     private WxXmlOutMessage executeText(WxXmlMessage wxMessage) {
-        return WxXmlOutMessage.TEXT().content(Constant.ResponseConst.DEFAULE_TEXT).toUser(wxMessage.getFromUserName()).fromUser(wxMessage.getToUserName()).build();
+
+        String content = wxMessage.getContent();
+        String response = chatRobotService.get(content);
+        if (response == null){
+            response = "不好意思，我没有听懂。";
+        }
+        return WxXmlOutMessage.TEXT().content(response).toUser(wxMessage.getFromUserName()).fromUser(wxMessage.getToUserName()).build();
     }
 
 }

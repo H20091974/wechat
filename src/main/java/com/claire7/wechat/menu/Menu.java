@@ -5,6 +5,7 @@ import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxConsts;
 import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.WxMenu;
+import com.soecode.wxtools.bean.result.WxMenuResult;
 import com.soecode.wxtools.exception.WxErrorException;
 
 import java.util.ArrayList;
@@ -16,11 +17,11 @@ import java.util.List;
  */
 public class Menu {
 
+    private IService iService = new WxService();
     /**
      * 初始化菜单
      */
     public void initMenu(){
-        IService iService = new WxService();
         WxMenu menu = new WxMenu();
         List<WxMenu.WxMenuButton> btnList = new ArrayList<>();
 
@@ -68,6 +69,15 @@ public class Menu {
             iService.createMenu(menu, false);
         } catch (WxErrorException e) {
             e.printStackTrace();
+        }
+    }
+
+    public WxMenuResult getMenu(){
+        try {
+            return iService.getMenu();
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
