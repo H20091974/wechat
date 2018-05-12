@@ -55,7 +55,12 @@ public class WeChatController {
                     .eventKey(Constant.MenuKey.TALK_ABOUT).handler(TalkAboutDesignHandler.getInstance()).end();
 
             // 把消息传递给路由器进行处理
-            WxXmlOutMessage xmlOutMsg = execute(wx);
+            WxXmlOutMessage xmlOutMsg = null;
+            if ("1".equals(wx.getContent())){
+                xmlOutMsg = executeText(wx);
+            }else {
+                xmlOutMsg = executeArticle(wx);
+            }
             if (xmlOutMsg != null)
                 out.print(xmlOutMsg.toXml());
         } catch (Exception e) {
@@ -67,7 +72,7 @@ public class WeChatController {
     }
 
 
-    private WxXmlOutMessage execute(WxXmlMessage wxMessage) {
+    private WxXmlOutMessage executeArticle(WxXmlMessage wxMessage) {
         try {
             NewsBuilder newsBuilder = WxXmlOutMessage.NEWS();
             WxXmlOutNewsMessage.Item item = new WxXmlOutNewsMessage.Item();
@@ -79,6 +84,10 @@ public class WeChatController {
             return newsBuilder.toUser(wxMessage.getFromUserName()).fromUser(wxMessage.getToUserName()).build();
         } catch (Exception e) {
         }
+        return WxXmlOutMessage.TEXT().content(Constant.ResponseConst.DEFAULE_TEXT).toUser(wxMessage.getFromUserName()).fromUser(wxMessage.getToUserName()).build();
+    }
+
+    private WxXmlOutMessage executeText(WxXmlMessage wxMessage) {
         return WxXmlOutMessage.TEXT().content(Constant.ResponseConst.DEFAULE_TEXT).toUser(wxMessage.getFromUserName()).fromUser(wxMessage.getToUserName()).build();
     }
 
