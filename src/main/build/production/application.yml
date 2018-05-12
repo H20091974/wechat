@@ -1,0 +1,35 @@
+server:
+    port: 8080
+    context-path: /wechat
+    max-http-header-size: 8192
+    compression:
+        min-response-size: 512
+        enabled: true
+        mime-types: text/html,text/css,text/javascript,application/javascript,image/gif,image/png,image/jpg
+    tomcat:
+          maxThreads: 10
+          minSpareThreads: 3
+          accesslog:
+            directory: ./log/server_log
+            pattern: combined
+            enabled: true
+logging:
+    config: classpath:log4j2.xml
+spring:
+    velocity:
+        cache: true
+        charset: UTF-8
+        properties:
+          input.encoding: UTF-8
+          output.encoding: UTF-8
+          directive.parse.max.depth: 2
+    http:
+        encoding.charset: UTF-8
+        encoding.force: false
+        multipart:
+          max-file-size: 3MB
+          max-request-size: 10MB
+    mvc:
+        static-path-pattern: /**
+    resources:
+        static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/
