@@ -47,7 +47,7 @@ public class WeChatController {
             WxMessageRouter router = new WxMessageRouter(iService);
 
             WxXmlMessage wx = XStreamTransformer.fromXml(WxXmlMessage.class, request.getInputStream());
-
+            System.out.println("content: "+wx.getContent());
             router.rule().event(WxConsts.EVT_CLICK)
                     .eventKey(Constant.MenuKey.TRAVEL_DESIGN).handler(TravelDesignHandler.getInstance()).next().rule()
                     .eventKey(Constant.MenuKey.TALK_ABOUT).handler(TalkAboutDesignHandler.getInstance()).end();
