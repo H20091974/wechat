@@ -1,6 +1,5 @@
 package com.claire7.wechat;
 
-import com.claire7.wechat.menu.Menu;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -21,8 +20,6 @@ public class Application extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) throws Exception {
-        Menu menu = new Menu();
-        menu.initMenu();
         SpringApplication.run(Application.class, args);
     }
 }
